@@ -1,0 +1,27 @@
+    def pp(www_encoded_form)
+      output = {"a" => []}
+      branches = []
+
+      kps = www_encoded_form.split(/&/)
+      kps.each do |kp|
+        keys, val = kp.split(/=/)
+        keys = parse_key(keys)
+        branches << assign_key_val(keys, val)
+      end
+
+      lead_branch = branches.first
+
+      output
+    end
+
+    def assign_key_val(keys, val)
+      return {keys.first => val} if keys.length == 1
+
+      {keys.first => assign_key_val(keys.drop(1), val)}
+    end
+
+    # this should return an array
+    # user[address][street] should return ['user', 'address', 'street']
+    def parse_key(key)
+      key.scan(/\w+/)
+    end
